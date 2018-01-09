@@ -58,7 +58,7 @@ overlay_upper = "/home/#{vagrant_user}/.overlay"
 guest_ip = "192.168.56.111"
 guest_mem = "4096"
 guest_swap = "4096"
-hostname = "reddit.local"
+hostname = "52topics.local"
 
 
 Vagrant.configure(2) do |config|

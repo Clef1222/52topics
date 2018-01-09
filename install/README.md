@@ -5,7 +5,7 @@ This folder contains all of the installation scripts required to build reddit on
 When making updates to any of these files, Travis will test out the minimal install in `travis.sh` but not the full install.  *Please test on a fresh VM, and preferably using a modified web-install instructions:*
 
 ```bash
-wget https://raw.github.com/$GITHUBUSER/reddit/$TESTBRANCH/install-reddit.sh
+wget https://raw.github.com/$GITHUBUSER/52topics/$TESTBRANCH/install-reddit.sh
 chmod +x install-reddit.sh
 ./install-reddit.sh
 ```
