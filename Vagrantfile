@@ -115,7 +115,7 @@ Vagrant.configure(2) do |config|
       travis.vm.provision "shell", inline: <<-SCRIPT
         if [ ! -f /var/local/reddit_installed ]; then
           echo "running install script"
-          cd /home/#{vagrant_user}/src/reddit
+          cd /home/#{vagrant_user}/src/52topics
           ./install/travis.sh vagrant
           touch /var/local/reddit_installed
         else
@@ -142,7 +142,7 @@ Vagrant.configure(2) do |config|
       redditlocal.vm.provision "shell", inline: <<-SCRIPT
         if [ ! -f /var/local/reddit_installed ]; then
           echo "running install script"
-          cd /home/#{vagrant_user}/src/reddit
+          cd /home/#{vagrant_user}/src/52topics
           REDDIT_PLUGINS="#{plugin_string}" REDDIT_DOMAIN="#{hostname}" ./install/reddit.sh
           touch /var/local/reddit_installed
         else
@@ -153,7 +153,7 @@ Vagrant.configure(2) do |config|
       # inject test data
       redditlocal.vm.provision "shell", inline: <<-SCRIPT
         if [ ! -f /var/local/test_data_injected ]; then
-          cd /home/#{vagrant_user}/src/reddit
+          cd /home/#{vagrant_user}/src/52topics
           sudo -u #{vagrant_user} reddit-run scripts/inject_test_data.py -c 'inject_test_data()'
           touch /var/local/test_data_injected
         else
@@ -179,7 +179,7 @@ Vagrant.configure(2) do |config|
       # DONE: let this run whenever provision is run so that the user can see
       # how to proceed.
       redditlocal.vm.provision "shell", inline: <<-SCRIPT
-        cd /home/#{vagrant_user}/src/reddit
+        cd /home/#{vagrant_user}/src/52topics
         REDDIT_DOMAIN="#{hostname}" ./install/done.sh
       SCRIPT
   end
