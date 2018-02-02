@@ -137,7 +137,7 @@ function clone_reddit_service_repo {
     clone_reddit_repo $1 reddit/reddit-service-$1
 }
 
-clone_reddit_repo reddit reddit/reddit
+clone_reddit_repo 52topics 52topics/reddit
 clone_reddit_repo i18n reddit/reddit-i18n
 clone_reddit_service_repo websockets
 clone_reddit_service_repo activity
@@ -168,7 +168,7 @@ function install_reddit_repo {
     popd
 }
 
-install_reddit_repo reddit/r2
+install_reddit_repo 52topics/r2
 install_reddit_repo i18n
 for plugin in $REDDIT_AVAILABLE_PLUGINS; do
     copy_upstart $REDDIT_SRC/$plugin
@@ -183,7 +183,7 @@ sudo -u $REDDIT_USER make -C $REDDIT_SRC/i18n clean all
 # this builds static files and should be run *after* languages are installed
 # so that the proper language-specific static files can be generated and after
 # plugins are installed so all the static files are available.
-pushd $REDDIT_SRC/reddit/r2
+pushd $REDDIT_SRC/52topics/r2
 sudo -u $REDDIT_USER make clean pyx
 
 plugin_str=$(echo -n "$REDDIT_AVAILABLE_PLUGINS" | tr " " ,)
@@ -217,9 +217,9 @@ port = 8001
 DEVELOPMENT
     chown $REDDIT_USER development.update
 else
-    sed -i "s/^plugins = .*$/plugins = $plugin_str/" $REDDIT_SRC/reddit/r2/development.update
-    sed -i "s/^domain = .*$/domain = $REDDIT_DOMAIN/" $REDDIT_SRC/reddit/r2/development.update
-    sed -i "s/^oauth_domain = .*$/oauth_domain = $REDDIT_DOMAIN/" $REDDIT_SRC/reddit/r2/development.update
+    sed -i "s/^plugins = .*$/plugins = $plugin_str/" $REDDIT_SRC/52topics/r2/development.update
+    sed -i "s/^domain = .*$/domain = $REDDIT_DOMAIN/" $REDDIT_SRC/52topics/r2/development.update
+    sed -i "s/^oauth_domain = .*$/oauth_domain = $REDDIT_DOMAIN/" $REDDIT_SRC/52topics/r2/development.update
 fi
 
 sudo -u $REDDIT_USER make ini
@@ -240,12 +240,12 @@ function helper-script() {
 
 helper-script /usr/local/bin/reddit-run <<REDDITRUN
 #!/bin/bash
-exec paster --plugin=r2 run $REDDIT_SRC/reddit/r2/run.ini "\$@"
+exec paster --plugin=r2 run $REDDIT_SRC/52topics/r2/run.ini "\$@"
 REDDITRUN
 
 helper-script /usr/local/bin/reddit-shell <<REDDITSHELL
 #!/bin/bash
-exec paster --plugin=r2 shell $REDDIT_SRC/reddit/r2/run.ini
+exec paster --plugin=r2 shell $REDDIT_SRC/52topics/r2/run.ini
 REDDITSHELL
 
 helper-script /usr/local/bin/reddit-start <<REDDITSTART
@@ -270,7 +270,7 @@ REDDITFLUSH
 
 helper-script /usr/local/bin/reddit-serve <<REDDITSERVE
 #!/bin/bash
-exec paster serve --reload $REDDIT_SRC/reddit/r2/run.ini
+exec paster serve --reload $REDDIT_SRC/52topics/r2/run.ini
 REDDITSERVE
 
 ###############################################################################
@@ -281,13 +281,13 @@ chown $REDDIT_USER:$REDDIT_GROUP /var/opt/reddit/
 
 mkdir -p /srv/www/pixel
 chown $REDDIT_USER:$REDDIT_GROUP /srv/www/pixel
-cp $REDDIT_SRC/reddit/r2/r2/public/static/pixel.png /srv/www/pixel
+cp $REDDIT_SRC/52topics/r2/r2/public/static/pixel.png /srv/www/pixel
 
 if [ ! -f /etc/gunicorn.d/click.conf ]; then
     cat > /etc/gunicorn.d/click.conf <<CLICK
 CONFIG = {
     "mode": "wsgi",
-    "working_dir": "$REDDIT_SRC/reddit/scripts",
+    "working_dir": "$REDDIT_SRC/52topics/scripts",
     "user": "$REDDIT_USER",
     "group": "$REDDIT_USER",
     "args": (
@@ -394,7 +394,7 @@ ln -nsf /etc/nginx/sites-available/reddit-ssl /etc/nginx/sites-enabled/
 mkdir -p /var/log/nginx/traffic
 
 # link the ini file for the Flask click tracker
-ln -nsf $REDDIT_SRC/reddit/r2/development.ini $REDDIT_SRC/reddit/scripts/production.ini
+ln -nsf $REDDIT_SRC/52topics/r2/development.ini $REDDIT_SRC/52topics/scripts/production.ini
 
 service nginx restart
 
@@ -537,7 +537,7 @@ if [ ! -f /etc/gunicorn.d/geoip.conf ]; then
     cat > /etc/gunicorn.d/geoip.conf <<GEOIP
 CONFIG = {
     "mode": "wsgi",
-    "working_dir": "$REDDIT_SRC/reddit/scripts",
+    "working_dir": "$REDDIT_SRC/52topics/scripts",
     "user": "$REDDIT_USER",
     "group": "$REDDIT_USER",
     "args": (
@@ -559,13 +559,13 @@ CONSUMER_CONFIG_ROOT=$REDDIT_HOME/consumer-count.d
 
 if [ ! -f /etc/default/reddit ]; then
     cat > /etc/default/reddit <<DEFAULT
-export REDDIT_ROOT=$REDDIT_SRC/reddit/r2
-export REDDIT_INI=$REDDIT_SRC/reddit/r2/run.ini
+export REDDIT_ROOT=$REDDIT_SRC/52topics/r2
+export REDDIT_INI=$REDDIT_SRC/52topics/r2/run.ini
 export REDDIT_USER=$REDDIT_USER
 export REDDIT_GROUP=$REDDIT_GROUP
 export REDDIT_CONSUMER_CONFIG=$CONSUMER_CONFIG_ROOT
-alias wrap-job=$REDDIT_SRC/reddit/scripts/wrap-job
-alias manage-consumers=$REDDIT_SRC/reddit/scripts/manage-consumers
+alias wrap-job=$REDDIT_SRC/52topics/scripts/wrap-job
+alias manage-consumers=$REDDIT_SRC/52topics/scripts/manage-consumers
 DEFAULT
 fi
 
@@ -636,8 +636,8 @@ if [ ! -f /etc/cron.d/reddit ]; then
 
 # jobs that recalculate time-limited listings (e.g. top this year)
 PGPASSWORD=password
-*/15 * * * * $REDDIT_USER $REDDIT_SRC/reddit/scripts/compute_time_listings link year "['hour', 'day', 'week', 'month', 'year']"
-*/15 * * * * $REDDIT_USER $REDDIT_SRC/reddit/scripts/compute_time_listings comment year "['hour', 'day', 'week', 'month', 'year']"
+*/15 * * * * $REDDIT_USER $REDDIT_SRC/52topics/scripts/compute_time_listings link year "['hour', 'day', 'week', 'month', 'year']"
+*/15 * * * * $REDDIT_USER $REDDIT_SRC/52topics/scripts/compute_time_listings comment year "['hour', 'day', 'week', 'month', 'year']"
 
 # disabled by default, uncomment if you need these jobs
 #*    * * * * root /sbin/start --quiet reddit-job-email
