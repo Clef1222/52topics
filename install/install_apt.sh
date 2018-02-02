@@ -32,7 +32,7 @@ apt-get update
 # add the datastax cassandra repos (NB: this is required for
 # install_cassandra.sh to work correctly, and the non-existence of this
 # file will trigger install_cassandra.sh to rerun this script)
-echo deb http://debian.datastax.com/community stable main | \
+echo deb https://debian.datastax.com/community stable main | \
     sudo tee $CASSANDRA_SOURCES_LIST
     
 wget -qO- -L https://debian.datastax.com/debian/repo_key | \
