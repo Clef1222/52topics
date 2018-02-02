@@ -35,7 +35,7 @@ fi
 
 if ! sudo rabbitmqctl list_users | egrep "^reddit"
 then
-    sudo rabbitmqctl add_user reddit reddit
+    sudo rabbitmqctl add_user 52topics 52topics
 fi
 
 sudo rabbitmqctl set_permissions -p / reddit ".*" ".*" ".*"

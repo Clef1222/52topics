@@ -33,13 +33,13 @@ python <<END
 import pycassa
 sys = pycassa.SystemManager("localhost:9160")
 
-if "reddit" not in sys.list_keyspaces():
-    print "creating keyspace 'reddit'"
-    sys.create_keyspace("reddit", "SimpleStrategy", {"replication_factor": "1"})
+if "52topics" not in sys.list_keyspaces():
+    print "creating keyspace '52topics'"
+    sys.create_keyspace("52topics", "SimpleStrategy", {"replication_factor": "1"})
     print "done"
 
-if "permacache" not in sys.get_keyspace_column_families("reddit"):
+if "permacache" not in sys.get_keyspace_column_families("52topics"):
     print "creating column family 'permacache'"
-    sys.create_column_family("reddit", "permacache")
+    sys.create_column_family("52topics", "permacache")
     print "done"
 END
