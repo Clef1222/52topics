@@ -70,7 +70,7 @@ def make_map(config):
     mc('/submit', controller='front', action='submit')
 
     # redirect old urls to the new
-    ABOUT_BASE = "https://about.reddit.com/"
+    ABOUT_BASE = "https://about.52topics.com/"
     mc('/about', controller='redirect', action='redirect', dest=ABOUT_BASE, 
        conditions={'function':not_in_sr})
     mc('/about/values', controller='redirect', action='redirect', dest=ABOUT_BASE)
