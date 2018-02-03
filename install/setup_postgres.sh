@@ -38,7 +38,7 @@ CREATE USER _52topics WITH PASSWORD 'password';
 PGSCRIPT
 fi
 
-sudo -u postgres psql reddit <<FUNCTIONSQL
+sudo -u postgres psql _52topics <<FUNCTIONSQL
 create or replace function hot(ups integer, downs integer, date timestamp with time zone) returns numeric as \$\$
     select round(cast(log(greatest(abs(\$1 - \$2), 1)) * sign(\$1 - \$2) + (date_part('epoch', \$3) - 1134028003) / 45000.0 as numeric), 7)
 \$\$ language sql immutable;
