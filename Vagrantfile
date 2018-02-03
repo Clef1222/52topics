@@ -150,15 +150,15 @@ Vagrant.configure(2) do |config|
         fi
       SCRIPT
 
-      # inject test data
-      redditlocal.vm.provision "shell", inline: <<-SCRIPT
-        if [ ! -f /var/local/test_data_injected ]; then
-          cd /home/#{vagrant_user}/src/52topics
-          sudo -u #{vagrant_user} reddit-run scripts/inject_test_data.py -c 'inject_test_data()'
-          touch /var/local/test_data_injected
-        else
-          echo "inject test data already run"
-        fi
+#      # inject test data
+#      redditlocal.vm.provision "shell", inline: <<-SCRIPT
+#        if [ ! -f /var/local/test_data_injected ]; then
+#          cd /home/#{vagrant_user}/src/52topics
+#          sudo -u #{vagrant_user} reddit-run scripts/inject_test_data.py -c 'inject_test_data()'
+#          touch /var/local/test_data_injected
+#        else
+#          echo "inject test data already run"
+#        fi
 
         # HACK: stop and start everything (otherwise sometimes there's an issue with
         # ports being in use?)
